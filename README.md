@@ -1,7 +1,7 @@
-# 052 Test Mocks
+# 053 Testing Side Effects
 ## Lecture
 
-[![# Test Mocks](https://img.youtube.com/vi/GQ0tlIFdSM4/0.jpg)](https://www.youtube.com/watch?v=GQ0tlIFdSM4)
+[![# Test Side Effects](https://img.youtube.com/vi/cThGkIkcKbA/0.jpg)](https://www.youtube.com/watch?v=cThGkIkcKbA)
 
 ## Instructions
 
