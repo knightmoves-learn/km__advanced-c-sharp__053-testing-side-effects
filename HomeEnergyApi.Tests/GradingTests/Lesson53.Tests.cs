@@ -7,7 +7,8 @@ public class LessonTests
     private readonly string[] _requiredTestMethods =
     {
         "ShouldReturnTrueWhenItIsWeekend",
-        "ShouldReturnFalseWhenItIsWeekday"
+        "ShouldReturnFalseWhenItIsWeekday",
+        "ShouldReturnTrueWhenCalledOnSaturday",
     };
 
     [Fact]
