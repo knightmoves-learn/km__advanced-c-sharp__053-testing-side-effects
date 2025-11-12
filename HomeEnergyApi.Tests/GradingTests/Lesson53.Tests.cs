@@ -2,13 +2,11 @@ using System.Reflection;
 
 public class LessonTests
 {
-    private static string Lesson52FilePath = @"../../../Lesson52Tests/RateLimitingService.Tests.cs";
-    private string Lesson52Content = File.ReadAllText(Lesson52FilePath);
+    private static string Lesson53FilePath = @"../../../Lesson53Tests/DecryptionAuditService.Tests.cs";
+    private string Lesson53Content = File.ReadAllText(Lesson53FilePath);
     private readonly string[] _requiredTestMethods =
     {
-        "ShouldReturnTrueWhenItIsWeekend",
-        "ShouldReturnFalseWhenItIsWeekday",
-        "ShouldReturnTrueWhenCalledOnSaturday",
+        "ShouldLog_WhenValueDecrypted",
     };
 
     [Fact]
@@ -16,7 +14,7 @@ public class LessonTests
     {
         var testAssembly = Assembly.GetExecutingAssembly();
         var RateLimitingServiceTests = testAssembly.GetTypes()
-            .FirstOrDefault(t => t.Name == "RateLimitingServiceTests");
+            .FirstOrDefault(t => t.Name == "DecryptionAuditServiceTest");
 
         Assert.NotNull(RateLimitingServiceTests);
 
@@ -25,7 +23,7 @@ public class LessonTests
         foreach (var requiredMethodName in _requiredTestMethods)
         {
             var testMethod = RateLimitingServiceTests.GetMethod(requiredMethodName);
-            Assert.True(testMethod != null, $"Method {requiredMethodName} not found in RateLimitingServiceTests class");
+            Assert.True(testMethod != null, $"Method {requiredMethodName} not found in DecryptionAuditServiceTest class");
 
             try
             {
@@ -38,10 +36,5 @@ public class LessonTests
         }
     }
 
-    [Fact]
-    public void Lesson52ShouldUseMockDateTimeWrapperAndNotStubInTests()
-    {
-        Assert.Contains("Mock<IDateTimeWrapper>", Lesson52Content);
-        Assert.DoesNotContain("StubDateTimeWrapper", Lesson52Content);
-    }
+
 }
