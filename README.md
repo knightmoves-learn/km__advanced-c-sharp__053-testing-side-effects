@@ -5,45 +5,36 @@
 
 ## Instructions
 
-In this lesson you will be testing the method contained in `HomeEnergyApi/Services/RateLimitingService.cs` where a new method `IsWeekend()` has been added. You will need to create test stubs to test this method, in addition to adding tests to `HomeEnergyApi.Tests/Lesson51Tests/RateLimitingService.Tests.cs`. You should NOT change any test files inside of the `HomeEnergyApi.Tests/GradingTests`, these are used to grade your assignment.
+In this lesson you will be testing the method contained in `HomeEnergyApi/Services/RateLimitingService.cs` where a new method `IsWeekend()` has been added. You will need to create test stubs to test this method, in addition to adding tests to `HomeEnergyApi.Tests/Lesson53Tests/RateLimitingService.Tests.cs`. You should NOT change any test files inside of the `HomeEnergyApi.Tests/GradingTests`, these are used to grade your assignment.
 
-- In `HomeEnergyApi/Wrapper/IDateTimeWrapper.cs`
-    - Create a new public interface `IDateTimeWrapper` with an interface method `UtcNow()` returning type `DateTime`
-- In `HomeEnergyApi/Wrapper/DateTimeWrapper`
-    - Create a new public class `DateTimeWrapper` that implements the interface `IDateTimeWrapper`
-        - Implement the public method `UtcNow()` by returning `DateTime.UtcNow`
-- In `HomeEnergyApi/Program.cs`
-    - To the builder's services add a singleton passing the types `IDateTimeWrapper` and `DateTimeWrapper`
-- In `HomeEnergyApi/Services/RateLimitingService.cs`
-    - Add a new private property `dateTime` of type `IDateTimeWrapper` and add it to the constructor
-    - Modify all instances of `DateTime.UtcNow` in the class to use `dateTime.UtcNow()`
-- In `HomeEnergyApi.Tests/Lesson51Tests/RateLimitingService.Tests.cs`
-    - Create a new class `StubDateTimeWrapper` implementing `IDateTimeWrapper`
-        - Add a private property `dateTime` of type `DateTime`
-        - Create a constructor where a `DateTime` is passed in and assigned to `dateTime`
-        - Create a public method `SetUp` taking one argument of type `DateTime` with no return type
-            - Set the value of the newly created property `dateTime` to the passed `DateTime`
-        - Create a public method `UtcNow` with the return type `DateTime`
-            - Return the newly created property `dateTime`
-    - Add the following private properties / types to `RateLimitingServiceTests` 
-        - currentDateTime / `currentDateTime`
-            - Assign in the constructor to `DateTime.UtcNow`
-        - stubDateTime / `StubDateTimeWrapper`
-            - Assing in the constructor to a new `StubDateTimeWrapper` with `currentDateTime` passed
-        - rateLimitingService / `RateLimitingService?`
-            - Assign in the constructor to a new `RateLimitingService` with `stubDateTimeWrapper` passed
-    - Create a new unit test `ShouldReturnTrueWhenItIsTheWeekend()` with a `[Fact]` attribute
-        - Create a variable to hold the stubbed time by using `DateTime.Parse` and passing a weekend in `string` format
-            - You may use `"2000-01-01 01:01:01"` which is a Saturday
-        - Call `Setup()` on the property `stubDateTimeWrapper` and pass it your stubbed `DateTime` variable
-        - Create a result variable by calling `IsWeekend()` on the property `rateLimitingService`
-        - Assert that the value of your result variable is `true`
-    - Create a new unit test `ShouldReturnFalseWhenItIsWeekday()` with a `[Fact]` attribute
-        - Create a variable to hold the stubbed time by using `DateTime.Parse` and passing a week day in `string` format
-            - You may use `"2000-01-03 01:01:01"` which is a Monday
-        - Call `Setup()` on the property `stubDateTimeWrapper` and pass it your stubbed `DateTime` variable
-        - Create a result variable by calling `IsWeekend()` on the property `rateLimitingService`
-        - Assert that the value of your result variable is `false`
+- In `HomeEnergyApi.Tests/Stubs/StubLogger.cs`
+    - Create a new class `StubLogger<T>` implementing `ILogger<T>
+        - Create a new public property `LoggedInfoMessages` of type `List<string>` and initialize it as an empty list of strings
+        - Create a new public method `Log<TState>()` with no return type
+            - Give `Log<TState>()` the following argument names / types
+                - `logLevel` / `LogLevel` 
+                - `eventId` / `EventId`
+                - `state` / `TState`
+                - `exception` / `Exception` 
+                - `formatter` /  `Func<TState, Exception, string>`
+            - If the argument `logLevel` is equal to the value of `LogLevel.Information`
+                - Call `Add()` on the property `LoggedInfoMessages` passing in `formatter(state, exception)`
+        - Create a new public method `BeginScope<TState>` with the return type `IDisposable?` and specify it as `where TState : notnull` and give it an argument of type `TState`
+            - Throw a new `NotImplementedException()`
+        - Create a new public method `IsEnabled` with the return type `bool` and an argument of type `LogLevel`
+            - Throw a new `NotImplementedException()`
+- In `HomeEnergyApi.Tests/Lesson53Tests/DecryptionAuditService.Tests.cs`
+    - Create a new public class `DecryptionAuditServiceTest`
+        - Create a new private property `stubLogger` of type `StubLogger<DecryptionAuditService>`
+        - Create a new private property `service` of type `DecryptionAuditService`
+        - In the constructor...
+            - Set the value of `stubLogger` to a new instance of `StubLogger<DecryptionAuditService>`
+            - Set the value of `service` to a new `DecryptionAuditService` and pass `stubLogger` into it's constructor
+        - Create a new public void method `ShouldLog_WhenValueDecrypted` with the `[Fact]` attribute
+            - Initialize two string variables for the test cipher and plain text
+            - Call `OnValueDecrypted()` on `service` passing in your string variables
+            - Assert that the value of the logged message is equal to the expected value being logged in `HomeEnergyApi/Services/DecryptionAuditService.cs`
+
 
 ## Additional Information
 

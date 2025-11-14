@@ -13,7 +13,7 @@ namespace HomeEnergyApi.Services
         
         public void OnValueDecrypted(string cipherText, string plaintext)
         {
-            logger.LogInformation($"[Audit] Decrypted: {cipherText} to {plaintext}");
+            logger.LogInformation($"{cipherText} has been decrypted to {plaintext}");
         }
     }
 }
